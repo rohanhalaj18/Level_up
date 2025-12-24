@@ -1,0 +1,9 @@
+
+{
+  "name": "EduRecruit Pro Dashboard",
+  "description": "A comprehensive HR dashboard for educational recruitment featuring Google Meet integration, task management, and institutional partner tracking with a modern green and white education theme.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(52, 211, 153, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(110, 231, 183, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #0f172a;
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #10b981, #34d399, #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInDown 0.8s ease;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #companyName {
+            color: #64748b;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            animation: fadeIn 1s ease 0.3s backwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease 0.5s backwards;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.08));
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
+        }
+
+        .timer-icon {
+            font-size: 2em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .timer-display {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #10b981;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+        }
+
+        .timer-display.warning {
+            color: #f59e0b;
+            animation: warningPulse 1s ease-in-out infinite;
+        }
+
+        .timer-display.critical {
+            color: #ef4444;
+            animation: criticalPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes warningPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes criticalPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        #aptitudeForm {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .q-block {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 2px solid rgba(16, 185, 129, 0.1);
+            animation: slideInUp 0.6s ease backwards;
+            animation-delay: calc(var(--index) * 0.05s);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .q-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .q-block p {
+            font-size: 1.2em;
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .q-block label {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8fafc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 1.05em;
+            color: #475569;
+        }
+
+        .q-block label:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(52, 211, 153, 0.08));
+            border-color: rgba(16, 185, 129, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.1);
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        input[type="radio"]:checked {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        input[type="radio"]:checked::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            background-size: 200% 200%;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.4s ease;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            border: none;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>✨ Aptitude Test</h1>
+            <h3 id="companyName"></h3>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer">
+                <span class="timer-icon">⏱️</span>
+                <div class="timer-display" id="timerDisplay">20:00</div>
+            </div>
+        </div>
+
+        <form id="aptitudeForm"></form>
+
+        <button id="submitBtn" class="btn primary">
+            <span>Submit Answers</span>
+        </button>
+    </div>
+
+    <script>
+        const base = "http://localhost:5000";
+        const questions = JSON.parse(sessionStorage.getItem("aptitudeQuestions"));
+        const sessionId = sessionStorage.getItem("sessionId");
+
+        const form = document.getElementById("aptitudeForm");
+        const companyName = sessionStorage.getItem("selectedCompany");
+        document.getElementById("companyName").innerText = "Company: " + companyName;
+
+        // Timer functionality
+        let timeLeft = 20 * 60; // 20 minutes in seconds
+        const timerDisplay = document.getElementById("timerDisplay");
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            // Warning state (under 5 minutes)
+            if (timeLeft <= 300 && timeLeft > 60) {
+                timerDisplay.classList.add('warning');
+                timerDisplay.classList.remove('critical');
+            }
+            // Critical state (under 1 minute)
+            else if (timeLeft <= 60) {
+                timerDisplay.classList.add('critical');
+                timerDisplay.classList.remove('warning');
+            }
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Time's up! Submitting your answers automatically.");
+                submitAnswers();
+            }
+
+            timeLeft--;
+        }
+
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer(); // Initial call
+
+        // Build questions
+        questions.forEach((q, i) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = 'q-block';
+            qBlock.style.setProperty('--index', i);
+
+            qBlock.innerHTML = `
+                <p><strong>Q${i + 1}:</strong> ${q.question}</p>
+                ${q.options.map(opt =>
+                `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>`
+            ).join("")}
+            `;
+
+            form.appendChild(qBlock);
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('progressBar').style.width = (scrollTop / height) * 100 + "%";
+        });
+
+        async function submitAnswers() {
+            const answers = [];
+
+            for (let i = 0; i < questions.length; i++) {
+                const ans = document.querySelector(`input[name="q${i}"]:checked`);
+                answers.push(ans ? ans.value : "");
+            }
+
+            try {
+                const resp = await fetch(`${base}/api/placement/submit-round-1`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sessionId, userAnswers: answers })
+                });
+
+                const data = await resp.json();
+
+                if (data.passed) {
+                    alert(`Congrats! You scored ${data.score}% 🎉 Moving to Coding Round`);
+                    window.location.href = "./codinground.html";
+                } else {
+                    alert(`You scored ${data.score}%\nBetter luck next time.`);
+                }
+
+            } catch (err) {
+                console.error("Submit error:", err);
+                alert("Server error. Check backend logs.");
+            }
+        }
+
+        document.getElementById("submitBtn").onclick = async (e) => {
+            e.preventDefault();
+            clearInterval(timerInterval); // Stop timer on manual submit
+            await submitAnswers();
+        };
+        fetch("/end-round", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    answers: userAnswers,
+                    correctAnswers,
+                    startTime,
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    localStorage.setItem("round1Data", JSON.stringify(data));
+                    window.location.href = "./round1res.html";
+                });
+
+    </script>
+
+</body>
+
+</html>

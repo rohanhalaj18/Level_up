@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>🎯 Interview Studio — Ayesha HR (MediaPipe FaceMesh)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        :root {
+            --bg: #0a0e16;
+            --panel: #151b2b;
+            --muted: #94a3b8;
+            --accent: #4fa3ff;
+            --accent-hover: #3d8de0;
+            --card: #0f1520;
+            --green: #10b981;
+            --danger: #ef4444;
+            --border: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: Inter, system-ui, Segoe UI, Arial;
+            min-height: 100vh;
+            background: var(--bg);
+            color: #fff
+        }
+
+        header {
+            padding: 20px 28px;
+            background: var(--panel);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border)
+        }
+
+        header h1 {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 20px
+        }
+
+        .wrap {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            min-height: calc(100vh - 86px)
+        }
+
+        .avatar-panel {
+            padding: 32px;
+            border-right: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(180deg, #0f141f, #0a0e16)
+        }
+
+        .avatar-frame {
+            width: 260px;
+            height: 260px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #fff1e6, #ffd1a8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, .5)
+        }
+
+        svg#face {
+            width: 220px;
+            height: 220px
+        }
+
+        .avatar-title {
+            font-size: 18px;
+            font-weight: 700
+        }
+
+        .avatar-sub {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .controls-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 12px
+        }
+
+        .controls-left button {
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all .15s ease
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #3d8de0);
+            color: #fff
+        }
+
+        .btn-muted {
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: #e5e7eb
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: #fff
+        }
+
+        .controls-left button:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        .right-area {
+            padding: 28px;
+            overflow: auto;
+            background: var(--bg)
+        }
+
+        #videoPreview {
+            width: 100%;
+            height: 400px;
+            background: #050810;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .4)
+        }
+
+        #questionBox {
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1a2332, #0f1520);
+            border: 2px solid var(--border);
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 14px
+        }
+
+        .info-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: #e5e7eb;
+            font-weight: 600;
+            font-size: 13px
+        }
+
+        .timer {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 14px
+        }
+
+        .record-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap
+        }
+
+        .record-controls button {
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px
+        }
+
+        .status {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        .hint-box {
+            padding: 12px;
+            border-radius: 10px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: var(--muted);
+            text-align: center;
+            margin-top: 10px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #059669;
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 2px solid var(--border);
+            background: var(--panel)
+        }
+
+        #finishBtn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff
+        }
+
+        #finishBtn:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        .mouth-open {
+            transition: all .08s linear
+        }
+
+        .blink {
+            animation: blink .12s steps(1) infinite
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                transform: scaleY(1)
+            }
+
+            50% {
+                transform: scaleY(.2)
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(-50%, -50%) rotate(-5deg);
+            }
+
+            75% {
+                transform: translate(-50%, -50%) rotate(5deg);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media(max-width:900px) {
+            .wrap {
+                grid-template-columns: 1fr
+            }
+
+            .avatar-panel {
+                flex-direction: row;
+                gap: 12px;
+                padding: 12px
+            }
+
+            .avatar-frame {
+                width: 100px;
+                height: 100px
+            }
+
+            #videoPreview {
+                height: 240px
+            }
+
+            .record-controls {
+                flex-direction: column
+            }
+
+            .record-controls button {
+                width: 100%
+            }
+
+            #finishBtn {
+                width: 100%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🎯 Interview Studio — Ayesha HR</h1>
+        <div style="display:flex;gap:10px;align-items:center">
+            <div class="chip" id="qIndicator">Q 1 / 5</div>
+            <div class="chip">⏱️ Time: <span class="timer" id="timer">02:00</span></div>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <aside class="avatar-panel">
+            <div class="avatar-frame" aria-hidden="true">
+                <svg id="face" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="gSkin" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0" stop-color="#ffdcb3" />
+                            <stop offset="1" stop-color="#ffc08c" />
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(100,100)">
+                        <circle id="head" r="70" fill="url(#gSkin)"></circle>
+                        <ellipse id="leftEye" cx="-26" cy="-14" rx="8" ry="6" fill="#111"></ellipse>
+                        <ellipse id="rightEye" cx="26" cy="-14" rx="8" ry="6" fill="#111"></ellipse>
+                        <ellipse id="mouth" cx="0" cy="24" rx="22" ry="6" fill="#cc4c4c" class="mouth-open"></ellipse>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="avatar-title">Ayesha (Virtual HR)</div>
+            <div class="avatar-sub">Energetic — Indian accent</div>
+
+            <div class="controls-left" aria-hidden="false">
+                <button id="greetBtn" class="btn-primary">👋 Greet & Start</button>
+                <button id="repeatBtn" class="btn-muted">🔊 Repeat Question</button>
+                <button id="toggleFace" class="btn-muted">🕵️ Face-check: ON</button>
+            </div>
+
+            <div style="width:100%;margin-top:12px">
+                <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:8px">💡 Live Suggestion
+                </div>
+                <div id="liveHint" class="hint-box">—</div>
+            </div>
+        </aside>
+
+        <main class="right-area">
+            <video id="videoPreview" autoplay muted playsinline></video>
+
+            <div id="questionBox">Loading question…</div>
+
+            <div class="info-bar">
+                <div class="chip">🎙️ Mode: Audio-only</div>
+                <div class="chip" id="recState">Ready</div>
+            </div>
+
+            <div class="record-controls">
+                <button id="startRecord" class="btn-primary">🎙 Start Answer</button>
+                <button id="stopRecord" class="btn-danger" disabled>⏹ Stop</button>
+                <button id="saveAnswer" class="btn-muted" disabled>💾 Save</button>
+                <button id="nextQ" class="btn-muted">→ Next</button>
+            </div>
+
+            <div class="status" id="statusText">Try to keep your face centered and smile 😊</div>
+
+            <div
+                style="margin-top:16px;color:var(--muted);font-size:14px;text-align:center;padding:12px;background:var(--card);border-radius:10px;border:2px solid var(--border)">
+                <strong>📌 Note:</strong> Audio uploads after you click <em>Finish & Analyze</em>.
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <button id="finishBtn" disabled>✅ Finish & Analyze Interview</button>
+    </footer>
+
+    <div id="globalLoader"
+        style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--panel);padding:24px 32px;border-radius:16px;border:2px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.6);z-index:1000">
+        <div style="display:flex;align-items:center;gap:16px">
+            <span
+                style="width:24px;height:24px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);display:inline-block;animation:spin .8s linear infinite"></span>
+            <span style="font-size:16px;font-weight:600">Uploading answers...</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.min.js"></script>
+
+    <script type="module">
+        import { Recorder } from './js/recorder.js';
+        import { uploadAudios } from './js/api.js';
+
+        // ========== CONFIG ==========
+        const TTS_API_KEY = 'sk_1d61b226fd3c479db1965ed1ab8857178df12da128fd4c1a';
+        const TTS_VOICE_ID = '0ZOhGcBopt9S6GBK8tnj';
+        const MODEL_ID = 'eleven_multilingual_v2';
+        const PER_QUESTION_SECONDS = 120;
+
+        // ========== SESSION DATA (FROM BACKEND) ==========
+        const questions = JSON.parse(sessionStorage.getItem('questions') || '[]');
+        const sessionId = sessionStorage.getItem('sessionId') || 'local-' + Date.now();
+
+        if (!questions || !questions.length) {
+            alert('No questions found in sessionStorage. Go to setup.');
+        }
+
+        // ========== ELEMENTS ==========
+        const video = document.getElementById('videoPreview');
+        const questionBox = document.getElementById('questionBox');
+        const qIndicator = document.getElementById('qIndicator');
+        const timerEl = document.getElementById('timer');
+        const recState = document.getElementById('recState');
+        const statusText = document.getElementById('statusText');
+        const liveHint = document.getElementById('liveHint');
+        const mouth = document.getElementById('mouth');
+        const leftEye = document.getElementById('leftEye');
+        const rightEye = document.getElementById('rightEye');
+
+        const greetBtn = document.getElementById('greetBtn');
+        const repeatBtn = document.getElementById('repeatBtn');
+        const toggleFaceBtn = document.getElementById('toggleFace');
+        const startBtn = document.getElementById('startRecord');
+        const stopBtn = document.getElementById('stopRecord');
+        const saveBtn = document.getElementById('saveAnswer');
+        const nextBtn = document.getElementById('nextQ');
+        const finishBtn = document.getElementById('finishBtn');
+        const globalLoader = document.getElementById('globalLoader');
+
+        // ========== STATE ==========
+        let currentIndex = 0;
+        let answers = new Array(questions.length).fill(null);
+        let recorder = null;
+        let faceCheckEnabled = true;
+        let camera = null;
+        let faceMesh = null;
+        let consecutiveLookAway = 0;
+        let consecutiveNoFace = 0;
+        let lastViolationAlert = 0;
+        let totalViolations = 0;
+
+        // ========== HELPERS ==========
+        function updateQUI() {
+            const q = questions[currentIndex] || { text: 'No question' };
+            questionBox.textContent = q.text;
+            qIndicator.textContent = `Q ${currentIndex + 1} / ${questions.length || 1}`;
+            finishBtn.disabled = answers.filter(Boolean).length !== questions.length;
+        }
+
+        function resetTimerUI() {
+            timerEl.textContent = new Date(PER_QUESTION_SECONDS * 1000).toISOString().substr(14, 5);
+        }
+
+        function loadQuestion(autoSpeak = false) {
+            updateQUI();
+            resetTimerUI();
+            if (autoSpeak && questions[currentIndex]) {
+                ttsSpeak(`Question ${currentIndex + 1}. ${questions[currentIndex].text}`);
+            }
+            saveBtn.disabled = true;
+        }
+
+        // ========== TTS (ELEVENLABS) ==========
+        async function ttsSpeak(text) {
+            try {
+                const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${TTS_VOICE_ID}`, {
+                    method: 'POST',
+                    headers: {
+                        'xi-api-key': TTS_API_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text, model_id: MODEL_ID })
+                });
+                if (!resp.ok) throw new Error('TTS failed');
+                const blob = await resp.blob();
+                const audio = new Audio(URL.createObjectURL(blob));
+                audio.play().catch(() => { });
+                animateMouthForAudio(audio);
+                return;
+            } catch (err) {
+                // Fallback to Web Speech API
+                try {
+                    speechSynthesis.cancel();
+                    const u = new SpeechSynthesisUtterance(text);
+                    u.lang = 'en-IN';
+                    u.rate = 1;
+                    speechSynthesis.speak(u);
+                } catch (e) {
+                    console.warn('TTS fallback failed', e);
+                }
+            }
+        }
+
+        function animateMouthForAudio(audioEl) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const src = ctx.createMediaElementSource(audioEl);
+                const analyser = ctx.createAnalyser();
+                analyser.fftSize = 256;
+                src.connect(analyser);
+                analyser.connect(ctx.destination);
+                const data = new Uint8Array(analyser.frequencyBinCount);
+                function frame() {
+                    analyser.getByteFrequencyData(data);
+                    const avg = data.reduce((a, b) => a + b, 0) / data.length;
+                    const ry = 6 + (avg / 30);
+                    if (mouth) mouth.setAttribute('ry', Math.min(20, ry));
+                    if (!audioEl.paused) requestAnimationFrame(frame);
+                    else if (mouth) mouth.setAttribute('ry', 6);
+                }
+                audioEl.onended = () => { if (mouth) mouth.setAttribute('ry', 6); };
+                frame();
+            } catch (e) {
+                if (mouth) {
+                    mouth.setAttribute('ry', 12);
+                    setTimeout(() => mouth.setAttribute('ry', 6), 800);
+                }
+            }
+        }
+
+        // ========== MEDIAPIPE FACEMESH ==========
+        async function initFaceMesh() {
+            faceMesh = new FaceMesh({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+            });
+
+            faceMesh.setOptions({
+                maxNumFaces: 2,
+                refineLandmarks: true,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+
+            faceMesh.onResults(onFaceResults);
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 640, height: 480 },
+                audio: false
+            });
+            video.srcObject = stream;
+            await video.play().catch(() => { });
+
+            camera = new Camera(video, {
+                onFrame: async () => {
+                    await faceMesh.send({ image: video });
+                },
+                width: 640,
+                height: 480
+            });
+            camera.start();
+        }
+
+        function dist(a, b) {
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function onFaceResults(results) {
+            if (!faceCheckEnabled) return;
+            const faces = results.multiFaceLandmarks;
+
+            // CRITICAL: Multiple faces detected
+            if (faces && faces.length > 1) {
+                showCheatingAlert('⚠️ MULTIPLE FACES DETECTED! Only one person allowed in frame.');
+                liveHint.innerHTML = '<span style="color:#ef4444;font-weight:700">❌ VIOLATION: Multiple people detected!</span>';
+                statusText.textContent = '⚠️ CHEATING ALERT: Multiple faces';
+                totalViolations++;
+                return;
+            }
+
+            // No face detected
+            if (!faces || !faces.length) {
+                consecutiveNoFace++;
+                consecutiveLookAway = 0;
+
+                if (consecutiveNoFace > 15) {
+                    liveHint.innerHTML = '<span style="color:#f59e0b;font-weight:600">⚠️ Face not visible — return to camera immediately</span>';
+                    statusText.textContent = '⚠️ Face missing - Please return';
+                    if (consecutiveNoFace > 45) {
+                        showCheatingAlert('⚠️ SUSPICIOUS: Face hidden for too long!');
+                        totalViolations++;
+                        consecutiveNoFace = 0;
+                    }
+                } else {
+                    liveHint.innerHTML = '<span class="suggestion">Face not detected — move closer to camera</span>';
+                    statusText.textContent = 'Detecting face...';
+                }
+                return;
+            }
+
+            consecutiveNoFace = 0;
+            const lm = faces[0];
+
+            const leftCorner = lm[61] || lm[78] || lm[0];
+            const rightCorner = lm[291] || lm[308] || lm[0];
+            const upperLip = lm[13] || lm[0];
+            const lowerLip = lm[14] || lm[0];
+            const nose = lm[1] || lm[0];
+            const leftEar = lm[234] || lm[0];
+            const rightEar = lm[454] || lm[0];
+
+            const mouthOpen = dist(upperLip, lowerLip);
+            const smileDist = dist(leftCorner, rightCorner);
+            const offset = (nose.x - 0.5);
+            const verticalOffset = (nose.y - 0.5);
+            const earDist = dist(leftEar, rightEar);
+            const extremeTurn = earDist < 0.12;
+
+            const lookLeft = offset < -0.18;
+            const lookRight = offset > 0.18;
+            const lookDown = verticalOffset > 0.15;
+            const lookUp = verticalOffset < -0.12;
+            const smile = smileDist > 0.04 && mouthOpen < 0.08;
+            const tooClose = smileDist > 0.2;
+            const tooFar = smileDist < 0.025;
+
+            if (lookLeft || lookRight || lookDown || lookUp || extremeTurn) {
+                consecutiveLookAway++;
+            } else {
+                consecutiveLookAway = 0;
+            }
+
+            if (extremeTurn) {
+                liveHint.innerHTML = '<span style="color:#ef4444;font-weight:700">❌ Face turned away — look at camera NOW!</span>';
+                statusText.textContent = '⚠️ CRITICAL: Face not visible';
+                if (consecutiveLookAway > 30) {
+                    showCheatingAlert('⚠️ SUSPICIOUS: Looking away for extended period!');
+                    totalViolations++;
+                    consecutiveLookAway = 0;
+                }
+            } else if (tooClose) {
+                liveHint.innerHTML = '<span style="color:#f59e0b;font-weight:600">⚠️ Too close — move back</span>';
+                statusText.textContent = 'Face too close to camera';
+            } else if (tooFar) {
+                liveHint.innerHTML = '<span style="color:#f59e0b;font-weight:600">⚠️ Too far — move closer</span>';
+                statusText.textContent = 'Face too far from camera';
+            } else if (lookDown) {
+                consecutiveLookAway++;
+                liveHint.innerHTML = '<span style="color:#f59e0b;font-weight:600">⚠️ Looking down — are you reading? Look at camera</span>';
+                statusText.textContent = '⚠️ Looking down detected';
+                if (consecutiveLookAway > 40) {
+                    showCheatingAlert('⚠️ SUSPICIOUS: Possible reference material usage!');
+                    totalViolations++;
+                    consecutiveLookAway = 0;
+                }
+            } else if (lookUp) {
+                liveHint.innerHTML = '<span style="color:#3b82f6">💭 Looking up (thinking) — return to camera</span>';
+                statusText.textContent = 'Looking up (thinking)';
+            } else if (lookLeft) {
+                consecutiveLookAway++;
+                liveHint.innerHTML = '<span style="color:#f59e0b;font-weight:600">⚠️ Looking left — face the camera</span>';
+                statusText.textContent = '⚠️ Looking left';
+                if (consecutiveLookAway > 35) {
+                    showCheatingAlert('⚠️ NOTICE: Prolonged distraction detected');
+                    totalViolations++;
+                    consecutiveLookAway = 0;
+                }
+            } else if (lookRight) {
+                consecutiveLookAway++;
+                liveHint.innerHTML = '<span style="color:#f59e0b;font-weight:600">⚠️ Looking right — face the camera</span>';
+                statusText.textContent = '⚠️ Looking right';
+                if (consecutiveLookAway > 35) {
+                    showCheatingAlert('⚠️ NOTICE: Prolonged distraction detected');
+                    totalViolations++;
+                    consecutiveLookAway = 0;
+                }
+            } else if (!smile) {
+                liveHint.innerHTML = '<span style="color:#10b981">😊 Try to smile — shows confidence</span>';
+                statusText.textContent = 'Good posture — consider smiling';
+            } else {
+                liveHint.innerHTML = '<span style="color:#10b981;font-weight:600">✅ Perfect! Centered and engaged</span>';
+                statusText.textContent = `✅ Excellent | Violations: ${totalViolations}`;
+            }
+
+            // Blink animation
+            if (Math.random() < 0.02) {
+                leftEye.classList.add('blink');
+                rightEye.classList.add('blink');
+                setTimeout(() => {
+                    leftEye.classList.remove('blink');
+                    rightEye.classList.remove('blink');
+                }, 120);
+            }
+
+            // Animate mouth based on user's mouth movement
+            if (mouth) {
+                const ry = 6 + Math.min(14, mouthOpen * 200);
+                mouth.setAttribute('ry', ry);
+            }
+        }
+
+        function showCheatingAlert(message) {
+            const now = Date.now();
+            if (now - lastViolationAlert < 5000) return;
+            lastViolationAlert = now;
+
+            const alert = document.createElement('div');
+            alert.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #dc2626, #991b1b);
+                color: white;
+                padding: 24px 40px;
+                border-radius: 16px;
+                font-size: 18px;
+                font-weight: 700;
+                box-shadow: 0 12px 48px rgba(220, 38, 38, 0.5);
+                z-index: 9999;
+                border: 3px solid #fca5a5;
+                text-align: center;
+                animation: shake 0.5s;
+            `;
+            alert.innerHTML = message;
+            document.body.appendChild(alert);
+
+            ttsSpeak('Warning. ' + message.replace(/[⚠️❌]/g, ''));
+
+            setTimeout(() => alert.remove(), 4000);
+        }
+
+        // ========== RECORDER INIT ==========
+        (async () => {
+            recorder = new Recorder({ previewEl: video, maxSeconds: PER_QUESTION_SECONDS });
+            await recorder.init();
+            recorder.onTick((seconds) => {
+                const remaining = Math.max(0, PER_QUESTION_SECONDS - seconds);
+                timerEl.textContent = new Date(remaining * 1000).toISOString().substr(14, 5);
+                if (remaining <= 0) {
+                    try { recorder.stop(); } catch (e) { }
+                    recState.textContent = 'Stopped (time up)';
+                    stopBtn.disabled = true;
+                    startBtn.disabled = false;
+                    saveBtn.disabled = false;
+                } else {
+                    recState.textContent = 'Recording...';
+                }
+            });
+            resetTimerUI();
+        })();
+
+        // ========== EVENT HANDLERS ==========
+        greetBtn.onclick = async () => {
+            greetBtn.disabled = true;
+            await ttsSpeak(
+                'Hello, I am Ayesha, your virtual HR. ' +
+                'We will start the interview. You have two minutes per question. Let us begin.'
+            );
+            try { initFaceMesh().catch(() => { }); } catch (e) { console.warn(e); }
+            setTimeout(() => loadQuestion(true), 2400);
+        };
+
+        repeatBtn.onclick = () => {
+            if (questions && questions[currentIndex]) {
+                ttsSpeak(`Question ${currentIndex + 1}. ${questions[currentIndex].text}`);
+            }
+        };
+
+        toggleFaceBtn.onclick = () => {
+            faceCheckEnabled = !faceCheckEnabled;
+            toggleFaceBtn.textContent = faceCheckEnabled ? '🕵️ Face-check: ON' : '🕵️ Face-check: OFF';
+            if (!faceCheckEnabled) liveHint.innerHTML = 'Face-check paused';
+        };
+
+        startBtn.onclick = async () => {
+            try {
+                await recorder.start();
+                recState.textContent = 'Recording...';
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                saveBtn.disabled = true;
+                ttsSpeak('Recording started');
+            } catch (e) {
+                alert('Microphone permission required. Please allow mic in browser.');
+            }
+        };
+
+        stopBtn.onclick = () => {
+            recorder.stop();
+            recState.textContent = 'Recording stopped';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            saveBtn.disabled = false;
+            ttsSpeak('Recording stopped');
+        };
+
+        saveBtn.onclick = () => {
+            const blob = recorder.getBlob();
+            if (!blob) return alert('No recording found.');
+            answers[currentIndex] = blob;
+            recorder.clear();
+            saveBtn.disabled = true;
+            recState.textContent = 'Saved';
+            ttsSpeak('Answer saved');
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion(true);
+            }
+            finishBtn.disabled = answers.filter(Boolean).length !== questions.length;
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion(true);
+            } else {
+                ttsSpeak('This is the last question');
+            }
+        };
+
+        finishBtn.onclick = async () => {
+            if (answers.some(a => !a)) {
+                if (!confirm('Some answers are not recorded. Continue and upload existing?')) return;
+            }
+            globalLoader.style.display = 'block';
+            finishBtn.disabled = true;
+            const fd = new FormData();
+            fd.append('sessionId', sessionId);
+            answers.forEach((b, i) => {
+                if (b) fd.append(`audio${i}`, b, `audio${i}.webm`);
+            });
+            try {
+                const res = await uploadAudios(fd);
+                globalLoader.style.display = 'none';
+                ttsSpeak('All answers uploaded. Thank you. Redirecting to results.');
+                if (res && res.sessionId) sessionStorage.setItem('sessionId', res.sessionId);
+                window.location.href = './result.html';
+            } catch (err) {
+                globalLoader.style.display = 'none';
+                finishBtn.disabled = false;
+                alert('Upload failed — check console.');
+                console.error(err);
+            }
+        };
+
+        // Initialize UI with questions if present
+        if (questions && questions.length) loadQuestion(false);
+
+        // Periodically enable finish button state
+        setInterval(() => {
+            finishBtn.disabled = answers.filter(Boolean).length !== questions.length;
+        }, 600);
+    </script>
+</body>
+
+</html>

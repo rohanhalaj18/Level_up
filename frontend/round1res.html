@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Round 1 Performance</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        #meme {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Your Performance</h2>
+
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <div id="details"></div>
+
+    <div id="meme">
+        <h3>Bro you finished TOO fast… something’s sus 😭🔥</h3>
+        <img src="https://i.imgflip.com/7xw39f.jpg" width="300" />
+    </div>
+
+    <script>
+        const data = JSON.parse(localStorage.getItem("round1Data"));
+
+        // Show meme if < 2 min
+        if (data.timeTaken < 120) {
+            document.getElementById("meme").style.display = "block";
+        }
+
+        // Graph
+        new Chart(document.getElementById("myChart"), {
+            type: "bar",
+            data: {
+                labels: ["Correct", "Wrong"],
+                datasets: [{
+                    data: [data.score, data.total - data.score],
+                }]
+            }
+        });
+
+        // Correct / Wrong Details
+        let detailHTML = "<h3>Correct Answers Summary</h3>";
+        data.wrong.forEach(w => {
+            detailHTML += `
+      <p>Question ${w.question}:  
+      Your Answer: <b>${w.yourAns}</b> | Correct: <b>${w.correctAns}</b></p>
+    `;
+        });
+
+        document.getElementById("details").innerHTML = detailHTML;
+    </script>
+
+</body>
+
+</html>

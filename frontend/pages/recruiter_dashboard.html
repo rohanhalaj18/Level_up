@@ -1,0 +1,141 @@
+<!-- public/recruiter_dashboard.html -->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard — Recruiter</title>
+    <link rel="stylesheet" href="../css/rec1.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">
+                <div class="logo">HR</div>
+                <div>
+                    <h1>Recruiter Dashboard</h1>
+                    <div style="color:var(--muted);font-size:13px">Welcome back — quick view of candidates</div>
+                </div>
+            </div>
+            <div>
+                <button onclick="window.location.href='http://localhost:3000/'"
+                    class="btn btn-primary">Dashboard</button>
+                <button id="logout" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+        <div class="grid">
+            <div>
+                <div class="card">
+                    <div class="stats">
+                        <div class="stat"> <span>Total Candidates</span> <strong id="totalCount">0</strong> </div>
+                        <div class="stat"> <span>Avg Aptitude</span> <strong id="avgApt">0</strong> </div>
+                        <div class="stat"> <span>Avg Coding</span> <strong id="avgCode">0</strong> </div>
+                    </div>
+                    <div style="margin-top:12px">
+                        <h3 style="margin:0 0 10px 0">Candidates</h3>
+                        <div id="studentList" class="list"></div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:14px">
+                    <h3 style="margin:0 0 10px 0">Leaderboard</h3>
+                    <div id="leaderboard" class="leaderboard"></div>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <h3 style="margin:0 0 8px 0">Quick Actions</h3>
+                    <p style="color:var(--muted)">Open candidate profile, contact, or view leaderboard.</p>
+                    <div style="display:flex;gap:8px;margin-top:12px"> <button
+                            onclick="window.location.href='./leaderboard.html'" class="btn btn-primary">Open
+                            Leaderboard</button> <button onclick="downloadCSV()" class="btn btn-outline">Export
+                            CSV</button> </div>
+                </div>
+                <div class="card" style="margin-top:14px">
+                    <h4 style="margin-bottom:8px">Top Candidate</h4>
+                    <div id="topcard"></div>
+                </div>
+                <div class="card" style="margin-top:14px">
+                    <h3 style="margin-bottom:10px">Recruiter Calendar</h3>
+
+                    <div class="calendar">
+                        <div class="cal-header">
+                            <span>January 2025</span>
+                        </div>
+
+                        <div class="cal-days">
+                            <span>Mo</span><span>Tu</span><span>We</span>
+                            <span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+                        </div>
+
+                        <div class="cal-grid">
+                            <div class="day muted"></div>
+                            <div class="day muted"></div>
+
+                            <div class="day">1</div>
+                            <div class="day">2</div>
+                            <div class="day mark">3</div>
+                            <div class="day">4</div>
+                            <div class="day">5</div>
+
+                            <div class="day">6</div>
+                            <div class="day">7</div>
+                            <div class="day">8</div>
+                            <div class="day">9</div>
+                            <div class="day today">10</div>
+                            <div class="day">11</div>
+                            <div class="day">12</div>
+                        </div>
+
+                        <small style="color:var(--muted)">
+                            Click a date to mark/unmark tasks
+                        </small>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:14px">
+                    <h3 style="margin-bottom:10px">Today’s Tasks</h3>
+
+                    <div class="tasks">
+                        <label class="task">
+                            <input type="checkbox">
+                            <span>Review resumes</span>
+                        </label>
+
+                        <label class="task">
+                            <input type="checkbox">
+                            <span>Schedule interviews</span>
+                        </label>
+
+                        <label class="task">
+                            <input type="checkbox">
+                            <span>Send feedback emails</span>
+                        </label>
+                    </div>
+
+                    <input class="task-input" placeholder="Add new task..." />
+                </div>
+
+
+            </div>
+        </div>
+    </div> <!-- Contact modal (hidden initially) -->
+    <div id="contactModal" class="modal" style="display:none">
+        <div class="box">
+            <h3>Contact Candidate</h3>
+            <p style="color:var(--muted)">This will send an email to the candidate .</p>
+            <div style="margin:12px 0"> <label>To</label> <input id="mailTo"
+                    style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0" /> </div>
+            <div style="margin:12px 0"> <label>Subject</label> <input id="mailSub"
+                    style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0" /> </div>
+            <div style="margin:12px 0"> <label>Message</label> <textarea id="mailMsg" rows="6"
+                    style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0"></textarea> </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end"> <button id="closeModal"
+                    class="btn btn-outline">Cancel</button> <button id="sendMailBtn" class="btn btn-primary">Send
+                    Email</button> </div>
+            <div id="sendRes" style="margin-top:10px;color:var(--muted)"></div>
+        </div>
+    </div>
+    <script src="../js/recruiter.js"></script>
+</body>
+
+</html>

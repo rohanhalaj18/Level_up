@@ -1,0 +1,150 @@
+<!-- public/student_profile.html -->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Candidate Profile</title>
+    <link rel="stylesheet" href="../css/rec1.css" />
+    <style>
+        .profile-header {
+            display: flex;
+            gap: 18px;
+            align-items: center
+        }
+
+        .big-avatar {
+            width: 92px;
+            height: 92px;
+            border-radius: 12px;
+            background: var(--glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--accent)
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px
+        }
+
+        .small {
+            padding: 10px;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid rgba(10, 10, 10, 0.03)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="margin-bottom:18px">
+            <button id="BACK" class="btn btn-outline">← Back</button>
+        </div>
+
+        <div class="card">
+            <div class="profile-header">
+                <div class="big-avatar" id="avatar">RS</div>
+                <div>
+                    <h2 id="sname">Name</h2>
+                    <div style="color:var(--muted)" id="srole">Role</div>
+                    <div style="margin-top:8px"><a id="resumeLink" class="btn btn-outline" href="#">Open Resume</a>
+                    </div>
+                </div>
+                <div style="margin-left:auto;display:flex;gap:8px">
+                    <button id="contactBtn" class="btn btn-primary">Contact</button>
+                </div>
+            </div>
+
+            <div class="stats-row" style="margin-top:16px">
+                <div class="small">
+                    <div style="color:var(--muted)">Aptitude</div>
+                    <strong id="aptVal">0</strong>
+                </div>
+                <div class="small">
+                    <div style="color:var(--muted)">Coding</div>
+                    <strong id="codeVal">0</strong>
+                </div>
+                <div class="small">
+                    <div style="color:var(--muted)">Interview Mood (happy%)</div>
+                    <strong id="happyVal">0</strong>
+                </div>
+            </div>
+
+            <div style="margin-top:18px;color:var(--muted)" id="moreInfo">More info</div>
+        </div>
+    </div>
+
+    <!-- reuse contact modal -->
+    <div id="contactModal" class="modal" style="display:none">
+        <div class="box">
+            <h3>Contact Candidate</h3>
+            <p style="color:var(--muted)">This will send an email to the candidate (demo).</p>
+            <div style="margin:12px 0">
+                <label>To</label>
+                <input id="mailTo" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0" />
+            </div>
+            <div style="margin:12px 0">
+                <label>Subject</label>
+                <input id="mailSub" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0" />
+            </div>
+            <div style="margin:12px 0">
+                <label>Message</label>
+                <textarea id="mailMsg" rows="6"
+                    style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0"></textarea>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+                <button id="closeModal" class="btn btn-outline">Cancel</button>
+                <button id="sendMailBtn" class="btn btn-primary">Send Email</button>
+            </div>
+            <div id="sendRes" style="margin-top:10px;color:var(--muted)"></div>
+        </div>
+    </div>
+
+    <script>
+        
+        // pick student id from query param ?id=3
+        const params = new URLSearchParams(location.search);
+        const id = Number(params.get('id') || 1);
+        fetch('http://localhost:5000/api/recruiter/students').then(r => r.json()).then(js => {
+            const s = js.students.find(x => x.id === id);
+            if (!s) return document.body.innerHTML = "<div class='container'><p>Candidate not found</p></div>";
+            document.getElementById('sname').textContent = s.name;
+            document.getElementById('srole').textContent = s.role;
+            document.getElementById('avatar').textContent = s.name.split(' ').map(p => p[0]).join('').slice(0, 2);
+            document.getElementById('aptVal').textContent = s.aptitude;
+            document.getElementById('codeVal').textContent = s.coding;
+            document.getElementById('happyVal').textContent = s.interview.happy + '%';
+            document.getElementById('moreInfo').textContent = `Computed total score: ${Math.round((s.aptitude + s.coding + s.interview.attitude) / 3)}`;
+            document.getElementById('resumeLink').href = s.resume; // points to /resume/<key> on server
+            // wire contact button
+            document.getElementById('contactBtn').onclick = () => {
+                document.getElementById('contactModal').style.display = 'flex';
+                document.getElementById('mailTo').value = s.email;
+                document.getElementById('mailSub').value = `Interview Invitation — ${s.name}`;
+                document.getElementById('mailMsg').value = `Hello ${s.name},\n\nWe would like to invite you for a call regarding a role. Reply if interested.\n\nRegards,\nRecruiter`;
+            };
+            // modal actions
+            document.getElementById('closeModal').onclick = () => document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('sendMailBtn').onclick = async () => {
+                const to = document.getElementById('mailTo').value;
+                const subject = document.getElementById('mailSub').value;
+                const message = document.getElementById('mailMsg').value;
+                const resEl = document.getElementById('sendRes');
+                resEl.textContent = 'Sending...';
+                const r = await fetch('/api/recruiter/send-mail', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to, subject, message }) });
+                const j = await r.json();
+                if (j.ok) { resEl.textContent = 'Sent ✔'; if (j.previewUrl) resEl.innerHTML += `<br/><small>Preview: <a target="_blank" href="${j.previewUrl}">open</a></small>`; }
+                else { resEl.textContent = 'Error: ' + (j.error || 'unknown'); }
+            };
+        });
+        document.getElementById('BACK').onclick = () => history.back();
+        
+    </script>
+</body>
+
+</html>

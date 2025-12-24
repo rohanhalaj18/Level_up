@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Recruiter Dashboard</title>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --success: #22c55e;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Inter, system-ui, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #eef2ff, #f0fdf4);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 16px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+        }
+
+        .btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--border);
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat {
+            flex: 1;
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .leaderboard {
+            font-size: 14px;
+        }
+
+        /* ===== CALENDAR ===== */
+        .calendar {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .cal-header {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .cal-days,
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+        }
+
+        .cal-days span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .day {
+            padding: 8px 0;
+            border-radius: 8px;
+            background: #eef2f7;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .day:hover {
+            background: #e0e7ff;
+        }
+
+        .day.today {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .day.mark {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .day.muted {
+            background: transparent;
+            cursor: default;
+        }
+
+        /* ===== TASKS ===== */
+        .tasks {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .task-input {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="brand">
+                <div class="logo">HR</div>
+                <div>
+                    <h2>Recruiter Dashboard</h2>
+                    <div style="color:var(--muted);font-size:13px">
+                        Welcome back — quick view of candidates
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline">Logout</button>
+        </div>
+
+        <div class="grid">
+
+            <!-- LEFT COLUMN -->
+            <div>
+
+                <div class="card">
+                    <div class="stats">
+                        <div class="stat">
+                            <span>Total Candidates</span><br>
+                            <strong>24</strong>
+                        </div>
+                        <div class="stat">
+                            <span>Avg Aptitude</span><br>
+                            <strong>78</strong>
+                        </div>
+                        <div class="stat">
+                            <span>Avg Coding</span><br>
+                            <strong>82</strong>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:14px">Candidates</h3>
+                    <div class="list">
+                        <div>• John Doe</div>
+                        <div>• Jane Smith</div>
+                        <div>• Rahul Kumar</div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:14px">
+                    <h3>Leaderboard</h3>
+                    <div class="leaderboard">
+                        1. Jane Smith<br>
+                        2. Rahul Kumar<br>
+                        3. John Doe
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <button class="btn btn-primary">Open Leaderboard</button>
+                </div>
+
+                <div class="card" style="margin-top:14px">
+                    <h4>Top Candidate</h4>
+                    <strong>Jane Smith</strong>
+                </div>
+
+                <!-- CALENDAR -->
+                <div class="card" style="margin-top:14px">
+                    <h3>Recruiter Calendar</h3>
+
+                    <div class="calendar">
+                        <div class="cal-header">January 2025</div>
+
+                        <div class="cal-days">
+                            <span>Mo</span><span>Tu</span><span>We</span>
+                            <span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+                        </div>
+
+                        <div class="cal-grid">
+                            <div class="day muted"></div>
+                            <div class="day muted"></div>
+                            <div class="day">1</div>
+                            <div class="day">2</div>
+                            <div class="day mark">3</div>
+                            <div class="day">4</div>
+                            <div class="day">5</div>
+                            <div class="day">6</div>
+                            <div class="day">7</div>
+                            <div class="day">8</div>
+                            <div class="day">9</div>
+                            <div class="day today">10</div>
+                            <div class="day">11</div>
+                            <div class="day">12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TASKS -->
+                <div class="card" style="margin-top:14px">
+                    <h3>Today’s Tasks</h3>
+
+                    <div class="tasks">
+                        <label class="task">
+                            <input type="checkbox"> Review resumes
+                        </label>
+                        <label class="task">
+                            <input type="checkbox"> Schedule interviews
+                        </label>
+                    </div>
+
+                    <input class="task-input" placeholder="Add new task..." />
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // calendar toggle
+        document.querySelectorAll(".day").forEach(d => {
+            if (!d.classList.contains("muted")) {
+                d.onclick = () => d.classList.toggle("mark");
+            }
+        });
+
+        // add task
+        const input = document.querySelector(".task-input");
+        const tasks = document.querySelector(".tasks");
+
+        input.addEventListener("keypress", e => {
+            if (e.key === "Enter" && input.value.trim()) {
+                const label = document.createElement("label");
+                label.className = "task";
+                label.innerHTML = `<input type="checkbox"> ${input.value}`;
+                tasks.appendChild(label);
+                input.value = "";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Leaderboard – Recruiter Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@500&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --green: #16a34a;
+            --light-green: #d1fadf;
+            --bg: #ffffff;
+            --text: #1d1d1d;
+            --muted: #6b7280;
+            --card: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 30px;
+        }
+
+        h2 {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--green);
+            color: var(--green);
+            background: transparent;
+        }
+
+        .btn:hover {
+            background: var(--green);
+            color: white;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 14px;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Leaderboard rows */
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 10px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+        }
+
+        .row:hover {
+            background: var(--light-green);
+            transform: scale(1.01);
+        }
+
+        .rank {
+            font-weight: 700;
+            color: var(--green);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <button onclick="history.back()" class="btn">← Back</button>
+
+        <div class="card">
+            <h2>Leaderboard</h2>
+            <p style="color:var(--muted); font-size:14px;">Top performing students across all rounds</p>
+
+            <div id="lb" style="margin-top:18px"></div>
+        </div>
+
+        <div class="card">
+            <h2>Performance Graph</h2>
+            <canvas id="barChart" height="140"></canvas>
+        </div>
+
+        <div class="card">
+            <h2>Score Distribution</h2>
+            <canvas id="pieChart" height="140"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        fetch('http://localhost:5000/api/recruiter/students')
+            .then(r => r.json())
+            .then(js => {
+
+                const sorted = js.students.sort((a, b) => b.totalScore - a.totalScore);
+
+                // ------------------------ Render Leaderboard ------------------------
+                document.getElementById("lb").innerHTML = sorted.map((s, i) => `
+                    <div class="row">
+                        <div>
+                            <span class="rank">${i + 1}.</span> ${s.name}
+                            <small style="color:var(--muted)">(${s.role})</small>
+                        </div>
+                        <div><strong>${s.totalScore}</strong></div>
+                    </div>
+                `).join('');
+
+                // ------------------------ Bar Graph ------------------------
+                const names = sorted.map(s => s.name);
+                const scores = sorted.map(s => s.totalScore);
+
+                new Chart(document.getElementById("barChart"), {
+                    type: "bar",
+                    data: {
+                        labels: names,
+                        datasets: [{
+                            label: "Total Score",
+                            data: scores,
+                            backgroundColor: "#16a34a88",
+                            borderColor: "#16a34a",
+                            borderWidth: 2,
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // ------------------------ Pie Chart: Score Range ------------------------
+                let rangeLow = sorted.filter(s => s.totalScore < 40).length;
+                let rangeMid = sorted.filter(s => s.totalScore >= 40 && s.totalScore < 70).length;
+                let rangeHigh = sorted.filter(s => s.totalScore >= 70).length;
+
+                new Chart(document.getElementById("pieChart"), {
+                    type: "pie",
+                    data: {
+                        labels: ["0 - 40", "40 - 70", "70+"],
+                        datasets: [{
+                            data: [rangeLow, rangeMid, rangeHigh],
+                            backgroundColor: ["#ef4444", "#facc15", "#16a34a"]
+                        }]
+                    }
+                });
+            });
+    </script>
+
+</body>
+
+</html>

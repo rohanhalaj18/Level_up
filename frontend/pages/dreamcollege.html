@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream College Finder - DreamSync</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/dreamcollege.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+    <header>
+        <div class="logo"><span class="logo-icon">&#9654;</span> Level UPP</div>
+        <nav>
+            <ul>
+                <li><a href="../pages/main.html">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="../pages/service.html">Services</a></li>
+
+                <li><a href="#footer">Contact Us</a></li>
+                <li><a href="#">Recruiter</a></li>
+                <li>
+                    <button id="theme-switcher"><i class="fas fa-sun"></i></button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dream-college-main">
+        <div class="form-container">
+            <div class="progress-bar-container">
+                <p id="step-counter">Step 1 of 12</p>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill"></div>
+                </div>
+            </div>
+            <form id="dream-college-form">
+                <div class="question active" data-step="1">
+                    <h2>What is your career goal?</h2>
+                    <p>Enter the career you are aiming for.</p>
+                    <input type="text" name="careerGoal" placeholder="e.g., Software Engineer" required>
+                </div>
+                <div class="question" data-step="2">
+                    <h2>What is your current level of education?</h2>
+                    <p>e.g., High School, Bachelor's Degree.</p>
+                    <input type="text" name="currentLevel" placeholder="e.g., Completed 12th grade" required>
+                </div>
+                <div class="question" data-step="3">
+                    <h2>What is your stream?</h2>
+                    <p>e.g., Science, Commerce, Arts.</p>
+                    <input type="text" name="stream" placeholder="e.g., Science with PCM" required>
+                </div>
+                <div class="question" data-step="4">
+                    <h2>What are your marks?</h2>
+                    <p>Enter your percentage or GPA.</p>
+                    <input type="number" name="marks" placeholder="e.g., 85" required>
+                </div>
+                <div class="question" data-step="5">
+                    <h2>What entrance exams have you taken?</h2>
+                    <p>Separate multiple exams with a comma.</p>
+                    <input type="text" name="exams" placeholder="e.g., JEE Main, MHT-CET" required>
+                </div>
+                <div class="question" data-step="6">
+                    <h2>What is your rank in those exams?</h2>
+                    <p>Enter your rank for each exam.</p>
+                    <input type="text" name="rank" placeholder="e.g., 15000, 8000" required>
+                </div>
+                <div class="question" data-step="7">
+                    <h2>What is your preferred location?</h2>
+                    <p>e.g., City, State, or region.</p>
+                    <input type="text" name="location" placeholder="e.g., Mumbai, Maharashtra" required>
+                </div>
+                <div class="question" data-step="8">
+                    <h2>What is your preferred college type?</h2>
+                    <p>e.g., Government, Private, Autonomous.</p>
+                    <input type="text" name="collegeType" placeholder="e.g., Private" required>
+                </div>
+                <div class="question" data-step="9">
+                    <h2>What is your budget range?</h2>
+                    <p>Provide an approximate annual budget for tuition fees.</p>
+                    <input type="text" name="budgetRange" placeholder="e.g., 2-3 Lakhs per year" required>
+                </div>
+                <div class="question" data-step="10">
+                    <h2>What is your preferred course duration?</h2>
+                    <p>e.g., 3 years, 4 years.</p>
+                    <input type="text" name="duration" placeholder="e.g., 4 years" required>
+                </div>
+                <div class="question" data-step="11">
+                    <h2>What is your learning style?</h2>
+                    <p>e.g., Visual, Auditory, Read/Write, Kinesthetic.</p>
+                    <input type="text" name="learningStyle" placeholder="e.g., Visual and Read/Write" required>
+                </div>
+                <div class="question" data-step="12">
+                    <h2>What is your preferred campus life?</h2>
+                    <p>e.g., Focused on sports, arts, research, etc.</p>
+                    <input type="text" name="campusLife" placeholder="e.g., Vibrant with many clubs" required>
+                </div>
+                <div class="navigation-buttons">
+                    <button type="button" id="prev-btn" style="display: none;">Previous</button>
+                    <button type="button" id="next-btn">Next</button>
+                    <button type="submit" id="submit-btn" style="display: none;">Find My Dream College</button>
+                </div>
+            </form>
+            <!-- Loading Screen -->
+            <div id="loading" class="loading-screen" style="display:none;">
+                <div class="spinner"></div>
+                <p>Finding your dream colleges...</p>
+            </div>
+            
+            <!-- RESULT SECTION -->
+            <section id="college-results" style="display:none;">
+                <h2 class="results-title">Your Top College Recommendations</h2>
+                <div id="result-cards"></div>
+            </section>
+            <section id="college-results" style="display:none;">
+                <h2 class="results-title">Your Top College Recommendations</h2>
+                <div id="result-cards"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>level up</h3>
+                <p>
+                    Empowering students to achieve their educational and career goals
+                    through personalized guidance.
+                </p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Career Counseling</a></li>
+                    <li><a href="dreamcollege.html">College Finder</a></li>
+                    <li><a href="#">Skill Assessment</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>Email: info@levelup.com</p>
+                <p>Phone: +91 1234567890</p>
+                <p>Address: Mumbai, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 level up. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/dreamcollege.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+
+</html>

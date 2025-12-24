@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources Finder - DreamSync</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/resource.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen" style="display:none;">
+        <div class="spinner"></div>
+        <p>Generating your personalized resources...</p>
+    </div>
+
+    <header>
+        <div class="logo"><span class="logo-icon">&#9654;</span> Level UPP</div>
+        <nav>
+            <ul>
+                <li><a href="../pages/main.html">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="../pages/service.html">Services</a></li>
+                <li><a href="resourcef.html">Resources</a></li>
+                <li><a href="#footer">Contact Us</a></li>
+                <li><a href="#">Recruiter</a></li>
+                <li>
+                    <button id="theme-switcher"><i class="fas fa-sun"></i></button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="hero typewriter-hero">
+            <div class="hero-content">
+                <div class="typewriter-container">
+                    <span id="typewriter-text" class="typewriter-text"></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="education-form-section" class="education-form">
+            <div class="progress-indicator">
+                <span></span>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+            </div>
+
+            <form id="education-form-container"></form>
+
+            <div id="summary" class="summary" style="display:none;">
+                <h2>Your Personalized Recommendations</h2>
+                <div id="resources-container"></div>
+                <button id="export-json">Export Selections</button>
+            </div>
+
+            <div class="navigation-buttons">
+                <button id="prev-btn" style="display:none;">Previous</button>
+                <button id="next-btn">Next</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>level up</h3>
+                <p>
+                    Empowering students to achieve their educational and career goals
+                    through personalized guidance.
+                </p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Career Counseling</a></li>
+                    <li><a href="#">College Finder</a></li>
+                    <li><a href="#">Skill Assessment</a></li>
+                    <li><a href="#">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>Email: info@levelup.com</p>
+                <p>Phone: +91 1234567890</p>
+                <p>Address: Mumbai, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 level up. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/resource.js"></script>
+    <script>feather.replace();</script>
+</body>
+
+</html>

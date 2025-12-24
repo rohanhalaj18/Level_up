@@ -1,0 +1,193 @@
+/* public/css/style.css */
+:root{
+  --bg:#ffffff;
+  --card:#f6fbf8;
+  --muted:#6b7280;
+  --accent:#0ea55b; /* modern green */
+  --accent-2:#0a8f49;
+  --text:#0f172a;
+  --glass: rgba(14,165,91,0.08);
+  --shadow: 0 8px 24px rgba(12, 74, 27, 0.06);
+}
+
+*{box-sizing:border-box}
+body{
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,#f8fffb 0%, #ffffff 100%);
+  color:var(--text);
+  margin:0;
+  padding:28px;
+}
+
+/* common container */
+.container{
+  max-width:1100px;
+  margin:0 auto;
+}
+
+/* header */
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:20px;
+}
+.brand {
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.logo {
+  width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+}
+h1 { font-size:20px; margin:0; }
+
+/* card */
+.card {
+  background:var(--card);
+  border-radius:12px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(10,10,10,0.03);
+}
+
+/* grid */
+.grid {
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap:18px;
+}
+
+/* dashboard stats */
+.stats {
+  display:flex;
+  gap:14px;
+  margin-bottom:14px;
+}
+.stat {
+  flex:1;
+  padding:14px;
+  border-radius:10px;
+  background:linear-gradient(180deg,#fff,#f1fdf3);
+  display:flex;
+  flex-direction:column;
+}
+.stat span{font-size:12px;color:var(--muted)}
+.stat strong{font-size:20px;margin-top:8px;color:var(--text)}
+
+/* list */
+.list{margin-top:12px}
+.list .item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+  background:white;
+  border:1px solid rgba(10,10,10,0.03);
+}
+.avatar-small{
+  width:56px;height:56px;border-radius:8px;background:var(--glass);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700;
+}
+.item .meta{flex:1}
+.meta h4{margin:0;font-size:16px}
+.meta p{margin:2px 0;color:var(--muted);font-size:13px}
+.item .actions{display:flex;gap:8px}
+
+/* buttons */
+.btn {
+  padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;
+}
+.btn-outline { background: transparent; border:1px solid rgba(10,10,10,0.06); color:var(--text) }
+.btn-primary { background:var(--accent); color:white; border:none }
+
+/* modal */
+.modal {
+  position:fixed;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(10,10,10,0.35);
+}
+.modal .box { width:560px; padding:18px; border-radius:12px; background:white; color:var(--text); }
+
+/* leaderboard */
+.leaderboard .row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(10,10,10,0.03)}
+.leaderboard .row:last-child{border-bottom:0}
+
+/* small responsive */
+@media(max-width:980px){
+  .grid{grid-template-columns:1fr}
+  .header{flex-direction:column;align-items:flex-start}
+}
+/* ===== Calendar ===== */
+.calendar {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.cal-header {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.cal-days, .cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.cal-days span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.day {
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #eef2f7;
+  font-size: 13px;
+}
+
+.day:hover {
+  background: #e0e7ff;
+}
+
+.day.today {
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+}
+
+.day.mark {
+  background: #22c55e;
+  color: white;
+}
+
+.day.muted {
+  background: transparent;
+  cursor: default;
+}
+
+/* ===== Tasks ===== */
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.task-input {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}

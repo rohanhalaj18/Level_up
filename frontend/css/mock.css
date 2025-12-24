@@ -1,0 +1,236 @@
+/* Mock Hero Section */
+.mock-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../Img/ai_intriew.png') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content .subtitle {
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    opacity: 0.9;
+}
+
+.cta-button {
+    background-color: #0fbd8a;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #0d9a6f;
+    transform: translateY(-3px);
+}
+
+/* Process Steps Section */
+.process-steps {
+    padding: 4rem 0;
+    text-align: center;
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.process-steps h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.steps-container {
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.steps-wrapper {
+    display: flex;
+    width: calc(280px * 10 + 4rem * 9); /* (card width * number of cards) + (gap * number of gaps) */
+    animation: scroll 40s linear infinite;
+}
+
+.steps-container:hover .steps-wrapper {
+    animation-play-state: paused;
+}
+
+.step-card {
+    background-color: #ffffff;
+    border-radius: 50%;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+    transition: transform 0.3s, box-shadow 0.3s;
+    flex-shrink: 0;
+    margin: 0 2rem;
+}
+
+.step-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.step-icon {
+    font-size: 2.5rem;
+    color: #0fbd8a;
+    margin-bottom: 1rem;
+}
+
+.step-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.step-card p {
+    color: #666;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+/* Warnings Section */
+.warnings-section {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.blinking-text {
+    color: rgb(148, 28, 28);
+    font-size: 7rem;
+    animation: blink 1s infinite;
+}
+
+
+/* Dark Theme Adjustments */
+body.dark-theme .step-card {
+    background-color: #2a2a2a;
+}
+
+body.dark-theme .step-card p {
+    color: #ccc;
+}
+
+/* Interview Rules Section */
+.interview-rules {
+    padding: 4rem 2rem;
+    background-color: #f9f9f9;
+}
+
+body.dark-theme .interview-rules {
+    background-color: #1e1e1e;
+}
+
+.rules-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.rule-card {
+    display: flex;
+    align-items: flex-start;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+body.dark-theme .rule-card {
+    background-color: #2a2a2a;
+}
+
+.rule-icon {
+    font-size: 1.8rem;
+    color: #0fbd8a;
+    margin-right: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.rule-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.rule-content ul {
+    list-style-type: none;
+    padding-left: 0;
+    color: #666;
+}
+
+body.dark-theme .rule-content ul {
+    color: #ccc;
+}
+
+.rule-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+
+/* Animation */
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-280px * 5 - 4rem * 5)); /* scroll halfway */
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+
+    .process-steps h2 {
+        font-size: 2rem;
+    }
+}
+.center-button-container {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.lets-begin-button {
+    background-color: #0fbd8a;
+    color: white;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.lets-begin-button:hover {
+    background-color: #0d9a6f;
+    transform: translateY(-3px);
+}
